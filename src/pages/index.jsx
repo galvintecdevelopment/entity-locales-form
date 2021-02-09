@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { brand as b } from '../data/brand';
 
 // Components
-import BrandForm from '../components/brands/BrandForm';
+import BrandForm from '../components/brand/BrandForm';
 
 // Component definition
 const HomePage = ({ brand = b }) => {
