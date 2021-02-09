@@ -1,5 +1,5 @@
 // Vendor libs
-import React from 'react';
+import React, { useState } from 'react';
 
 // Members
 const b = {
@@ -24,11 +24,25 @@ const b = {
   ],
 };
 
+// Components
+import BrandForm from '../components/brands/BrandForm';
+
 // Component definition
 const HomePage = ({ brand = b }) => {
+  // Component state
+  const [currentBrand, setCurrentBrand] = useState(brand);
+
+  function handleBrandChanged(b) {
+    setCurrentBrand({ ...currentBrand, ...b });
+  }
+
   return (
     <>
-      <h4>{brand.name}</h4>
+      <h4>{currentBrand.name}</h4>
+      <BrandForm brand={currentBrand} onBrandChanged={handleBrandChanged} />
+      <button type='button' onClick={(e) => console.log({ ...currentBrand })}>
+        Save
+      </button>
     </>
   );
 };
