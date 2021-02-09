@@ -14,9 +14,19 @@ const BrandForm = ({ brand, onBrandChanged }) => {
   const availableLangs = brand.locales.map((bl) => bl.lang);
 
   // Event handlers
-  function handleBrandLocaleChanged(bl) {
-    const l = brand.locales.filter((x) => x.lang !== bl.lang);
-    const locales = [...l, bl];
+  function handleBrandLocaleChanged(currentBrandLocale) {
+    // Extract currentBrandLocale from existenting brandLocales
+    const filteredBrandLocale = brand.locales.filter(
+      (x) => x.lang !== currentBrandLocale.lang
+    );
+
+    // Merge currentBrandLocale with the others locales
+    const mergedLocales = [...filteredBrandLocale, currentBrandLocale];
+
+    // Set locales order (same of available langs)
+    const locales = availableLangs.map((l) =>
+      mergedLocales.find((x) => x.lang === l)
+    );
     onBrandChanged({
       ...brand,
       locales,

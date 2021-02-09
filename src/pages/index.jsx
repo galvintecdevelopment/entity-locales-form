@@ -32,6 +32,7 @@ const HomePage = ({ brand = b }) => {
   // Component state
   const [currentBrand, setCurrentBrand] = useState(brand);
 
+  // Event handlers
   function handleBrandChanged(b) {
     setCurrentBrand({ ...currentBrand, ...b });
   }

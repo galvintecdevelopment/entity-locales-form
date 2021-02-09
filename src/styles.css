@@ -1,6 +1,10 @@
 label {
-  width: 60px;
+  width: 100px;
   display: inline-block;
+}
+
+input {
+  width: 250px;
 }
 
 li.lang {
