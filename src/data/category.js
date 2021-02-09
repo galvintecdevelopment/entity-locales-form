@@ -1,0 +1,16 @@
+export const category = {
+  name: 'Calzado',
+  position: 1,
+  locales: [
+    {
+      lang: 'es',
+      name: 'Calzado',
+      slug: 'calzado',
+    },
+    {
+      lang: 'en',
+      name: 'Shoes',
+      slug: 'shoes',
+    },
+  ],
+};
