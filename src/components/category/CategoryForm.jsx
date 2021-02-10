@@ -3,6 +3,9 @@ import React from 'react';
 import { Formik, FieldArray, Form } from 'formik';
 import * as Yup from 'yup';
 
+// Custom libs
+import { categoryUpdateSchema } from '../../yup/category';
+
 // Component definition
 const CategoryForm = ({ category, onFormSubmit }) => {
   console.log({ category });
@@ -13,24 +16,11 @@ const CategoryForm = ({ category, onFormSubmit }) => {
         position: category?.position || 0,
         locales: category?.locales || [],
       }}
-      validationSchema={Yup.object({
-        name: Yup.string()
-          .min(3)
-          .max(15, 'Must be 15 characters or less')
-          .required('Required'),
-        position: Yup.number().min(1).max(10000).required('Required'),
-      })}
+      validationSchema={categoryUpdateSchema}
+      onBlur={(e) => console.log(e)}
       onSubmit={onFormSubmit}
     >
-      {({
-        errors,
-        values,
-        touched,
-        handleChange,
-        handleBlur,
-        setValues,
-        getFieldProps,
-      }) => (
+      {({ isValid, errors, values, dirty, touched, getFieldProps }) => (
         <Form>
           {/* Name */}
           <div>
@@ -58,8 +48,60 @@ const CategoryForm = ({ category, onFormSubmit }) => {
             ) : null}
           </div>
 
+          {/* Locales */}
+          <FieldArray name='locales'>
+            {() =>
+              values.locales.map((locale, i) => {
+                const localeError =
+                  (errors.locales?.length && errors.locales[i]) || {};
+                const localeTouched =
+                  (touched.locales?.length && touched.locales[i]) || {};
+
+                return (
+                  <div key={i}>
+                    <h5>Locale {i + 1}</h5>
+                    <div>
+                      <label>Name</label>
+                      <input
+                        type='text'
+                        id={`locales.${i}.name`}
+                        name={`locales.${i}.name`}
+                        {...getFieldProps(`locales.${i}.name`)}
+                      />
+                      {localeError.name && localeTouched.name && (
+                        <div>{localeError.name}</div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label>Slug</label>
+                      <input
+                        type='text'
+                        id={`locales.${i}.slug`}
+                        name={`locales.${i}.slug`}
+                        {...getFieldProps(`locales.${i}.slug`)}
+                      />
+                      {localeError.slug && localeTouched.slug && (
+                        <div>{localeError.slug}</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </FieldArray>
+
+          {!isValid && dirty && (
+            <div style={{ color: 'red' }}>
+              <h3>Hay errores</h3>
+              <div>{JSON.stringify(errors, 2, null)}</div>
+            </div>
+          )}
+
           <div>
-            <button type='submit'>Aceptar</button>
+            <button disabled={!(dirty && isValid)} type='submit'>
+              Aceptar
+            </button>
           </div>
         </Form>
       )}
